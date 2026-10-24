@@ -18,12 +18,11 @@ export const useGetGeminiMovies = async (searchText, searchDisabled, setSearchDi
     }, 12000);
 
     const findMovie = async (movieName) => {
-      // v3 API Key URL parameters me pass ki hai aur CORS Proxy wrap kiya hai
+      // Direct Vercel rewrite URL (No external proxy needed)
       const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-      const targetUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(movieName)}&include_adult=false&language=en-US&page=1&api_key=${apiKey}`;
-      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
+      const url = `/api/tmdb/search/movie?query=${encodeURIComponent(movieName)}&include_adult=false&language=en-US&page=1&api_key=${apiKey}`;
 
-      const movie = await fetch(proxyUrl);
+      const movie = await fetch(url);
       const json = await movie.json();
       return json.results;
     };
