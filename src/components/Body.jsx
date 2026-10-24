@@ -1,10 +1,22 @@
 import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Browse from "./Browse";
 
 const Body = () => {
+  const appRouter = createBrowserRouter([
+    {
+      path: "/",
+      element: <Browse />,
+    },
+    {
+      path: "/browse",
+      element: <Browse />,
+    },
+  ]);
+
   return (
     <div>
-      <Browse />
+      <RouterProvider router={appRouter} />
     </div>
   );
 };
