@@ -11,10 +11,11 @@ const MovieList = ({ title, movies, SuggestionPage }) => {
           {movies.map((movie) => (
             <MovieCard
               key={movie?.id}
+              movieId={movie?.id}           {/* <--- Yeh nayi line jodni hai */}
               title={movie?.title}
               posterPath={movie?.poster_path}
-              overView={movie?.overview.slice(0, 150)}
-              relesed={movie?.release_date.slice(0, 4)}
+              overView={movie?.overview?.slice(0, 150)}
+              relesed={movie?.release_date?.slice(0, 4)}
               rating={movie?.vote_average}
             />
           ))}
