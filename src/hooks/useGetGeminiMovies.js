@@ -21,7 +21,7 @@ export const useGetGeminiMovies = async (searchText, searchDisabled, setSearchDi
       // v3 API Key URL parameters me pass ki hai aur CORS Proxy wrap kiya hai
       const apiKey = import.meta.env.VITE_TMDB_API_KEY;
       const targetUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(movieName)}&include_adult=false&language=en-US&page=1&api_key=${apiKey}`;
-      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
 
       const movie = await fetch(proxyUrl);
       const json = await movie.json();
