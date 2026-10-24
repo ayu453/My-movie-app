@@ -1,31 +1,30 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addPopularMovies } from "../utils/moviesSlice";
-import { API_OPTIONS } from "../utils/constants";
+import { addNowPlayingMovies } from "../utils/moviesSlice";
 
-const usePopularMovies = () => {
+const useNowPlayingMovies = () => {
   const dispatch = useDispatch();
 
-  const getPopularMovies = async () => {
+  const getNowPlayingMovies = async () => {
     try {
-      // AllOrigins Proxy (बेहद तेज़ और बिना ब्लॉक होने वाली प्रॉक्सी)
-      const targetUrl = "https://api.themoviedb.org/3/movie/popular?page=1";
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+      const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+      const targetUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&page=1`;
+      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
 
-      const data = await fetch(proxyUrl, API_OPTIONS);
+      const data = await fetch(proxyUrl);
       const json = await data.json();
       
-      if (json.results) {
-        dispatch(addPopularMovies(json.results));
+      if (json && json.results) {
+        dispatch(addNowPlayingMovies(json.results));
       }
     } catch (error) {
-      console.error("Failed to fetch popular movies:", error);
+      console.error("Failed to fetch now playing movies:", error);
     }
   };
 
   useEffect(() => {
-    getPopularMovies();
+    getNowPlayingMovies();
   }, []);
 };
 
-export default usePopularMovies;
+export default useNowPlayingMovies;
