@@ -1,18 +1,16 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUpcomingMovies } from "../utils/moviesSlice";
-import { useEffect } from "react";
 
 const useUpcomingMovies = () => {
   const dispatch = useDispatch();
 
   const getUpcomingMovies = async () => {
     try {
-      // v3 API Key + CORS Proxy
       const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-      const targetUrl = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&page=1`;
-      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
+      const url = `/api/tmdb/movie/upcoming?api_key=${apiKey}&page=1`;
 
-      const data = await fetch(proxyUrl);
+      const data = await fetch(url);
       const json = await data.json();
 
       if (json && json.results) {
