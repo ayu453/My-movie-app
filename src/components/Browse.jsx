@@ -5,7 +5,7 @@ import useTopRatedMovies from "../hooks/useTopRatedMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 import Header from "./Header";
 import MainContainer from "./MainContainer";
-import SecondaryContainer from "./secondaryContainer";
+import SecondaryContainer from "./SecondaryContainer";
 import GeminiSearch from "./GeminiSearch";
 import Footer from "./Footer";
 
