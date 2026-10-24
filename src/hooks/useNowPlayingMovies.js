@@ -8,9 +8,9 @@ const usePopularMovies = () => {
 
   const getPopularMovies = async () => {
     try {
-      // TMDB URL के आगे CORS Proxy जोड़ना
+      // AllOrigins Proxy (बेहद तेज़ और बिना ब्लॉक होने वाली प्रॉक्सी)
       const targetUrl = "https://api.themoviedb.org/3/movie/popular?page=1";
-      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
 
       const data = await fetch(proxyUrl, API_OPTIONS);
       const json = await data.json();
