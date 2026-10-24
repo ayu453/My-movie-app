@@ -17,7 +17,7 @@ export default function Watch() {
 
       {movieId ? (
         <iframe
-          src={`https://vidsrc.to/embed/movie/${movieId}`}
+          src={`https://vidsrc.me/embed/movie/${movieId}`}
           title="Movie Player"
           style={{ width: "100%", height: "100%", border: "none" }}
           allowFullScreen
