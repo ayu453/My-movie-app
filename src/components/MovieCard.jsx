@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { IMG_CDN_URL } from "../utils/constants";
+import { Img_CDN_Url } from "../utils/constants"; // <--- Yahan 'Img_CDN_Url' bilkul waise hi likhna hai jaisa constants.js me hai
 
 const MovieCard = ({ posterPath, movieId }) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const MovieCard = ({ posterPath, movieId }) => {
     >
       <img 
         alt="Movie Poster" 
-        src={IMG_CDN_URL + posterPath} 
+        src={Img_CDN_Url + posterPath} 
         className="rounded-lg w-full h-auto object-cover" 
       />
     </div>
