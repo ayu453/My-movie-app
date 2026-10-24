@@ -1,6 +1,5 @@
 import React from "react";
 import Gemini from "../utils/gemini-config";
-import { API_OPTIONS } from "../utils/constants";
 import { addGeminiMovieResults } from "../utils/geminiSlice";
 
 export const useGetGeminiMovies = async (searchText, searchDisabled, setSearchDisabled, dispatch, setErr) => {
@@ -19,10 +18,16 @@ export const useGetGeminiMovies = async (searchText, searchDisabled, setSearchDi
     }, 12000);
 
     const findMovie = async (movieName) => {
-      const movie = await fetch("https://api.themoviedb.org/3/search/movie?query=" + movieName + "&include_adult=false&language=en-US&page=1", API_OPTIONS);
+      // v3 API Key URL parameters me pass ki hai aur CORS Proxy wrap kiya hai
+      const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+      const targetUrl = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(movieName)}&include_adult=false&language=en-US&page=1&api_key=${apiKey}`;
+      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+
+      const movie = await fetch(proxyUrl);
       const json = await movie.json();
       return json.results;
     };
+
     setErr("");
     const model = Gemini;
     const prompt =
@@ -36,19 +41,16 @@ export const useGetGeminiMovies = async (searchText, searchDisabled, setSearchDi
       .split(",")
       .map((name) => name.trim())
       .filter((name) => name.length > 0);
-    movieNames;
+
     const promiseArray = movieNames.map((movie) => findMovie(movie));
     const foundMovies = await Promise.all(promiseArray);
-    let movies = foundMovies.map((resultsList) => resultsList[0]).filter((movie) => movie !== undefined);
+    let movies = foundMovies.map((resultsList) => resultsList && resultsList[0]).filter((movie) => movie !== undefined);
 
     const filteredMovies = movies;
 
-    filteredMovies;
-    " movies are : ", filteredMovies;
     dispatch(addGeminiMovieResults(filteredMovies));
-    result.response.text();
   } catch (error) {
     console.error("Gemini error:", error);
-    setErr(error);
+    setErr("Something went wrong! Please try again.");
   }
 };
