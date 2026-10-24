@@ -1,17 +1,16 @@
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-const Watch = () => {
+export default function Watch() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const movieId = searchParams.get("v");
 
   return (
-    <div className="w-screen h-screen bg-black flex flex-col justify-center items-center relative">
-      {/* Back Button */}
+    <div style={{ width: "100vw", height: "100vh", backgroundColor: "black", display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
       <button
         onClick={() => navigate(-1)}
-        className="absolute top-5 left-5 bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition z-50 cursor-pointer"
+        style={{ position: "absolute", top: "20px", left: "20px", background: "red", color: "white", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer", zIndex: 50 }}
       >
         ← Back
       </button>
@@ -20,22 +19,17 @@ const Watch = () => {
         <iframe
           src={`https://vidsrc.to/embed/movie/${movieId}`}
           title="Movie Player"
-          className="w-full h-full border-none"
+          style={{ width: "100%", height: "100%", border: "none" }}
           allowFullScreen
         ></iframe>
       ) : (
-        <div className="text-white text-center">
-          <h1 className="text-2xl font-bold mb-4">Movie Not Found!</h1>
-          <button
-            onClick={() => navigate("/browse")}
-            className="bg-white text-black px-4 py-2 rounded-lg font-bold cursor-pointer"
-          >
+        <div style={{ color: "white", textAlign: "center" }}>
+          <h1>Movie Not Found!</h1>
+          <button onClick={() => navigate("/browse")} style={{ padding: "10px 20px", cursor: "pointer" }}>
             Go to Home
           </button>
         </div>
       )}
     </div>
   );
-};
-
-export default Watch;
+}
