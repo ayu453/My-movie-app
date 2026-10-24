@@ -8,7 +8,7 @@ const useNowPlayingMovies = () => {
 
   const getNowPlayingMovies = async () => {
     try {
-      // Direct TMDB API call with CORS Proxy
+      // Direct TMDB URL ko CORS Proxy ke zariye bhejna
       const targetUrl = "https://api.themoviedb.org/3/movie/now_playing?page=1";
       const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
 
