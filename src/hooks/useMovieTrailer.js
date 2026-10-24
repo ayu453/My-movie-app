@@ -12,7 +12,7 @@ const useMovieTrailer = (movieId) => {
       // v3 API Key + CORS Proxy
       const apiKey = import.meta.env.VITE_TMDB_API_KEY;
       const targetUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US&api_key=${apiKey}`;
-      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
 
       const data = await fetch(proxyUrl);
       const json = await data.json();
