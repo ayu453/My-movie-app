@@ -9,12 +9,10 @@ const useMovieTrailer = (movieId) => {
     try {
       if (!movieId) return;
 
-      // v3 API Key + CORS Proxy
       const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-      const targetUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US&api_key=${apiKey}`;
-      const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
+      const url = `/api/tmdb/movie/${movieId}/videos?language=en-US&api_key=${apiKey}`;
 
-      const data = await fetch(proxyUrl);
+      const data = await fetch(url);
       const json = await data.json();
 
       if (json && json.results) {
