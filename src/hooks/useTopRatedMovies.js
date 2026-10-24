@@ -1,15 +1,25 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addTopRatedMovies } from "../utils/moviesSlice";
-import { API_OPTIONS } from "../utils/constants";
-import { useEffect } from "react";
 
 const useTopRatedMovies = () => {
   const dispatch = useDispatch();
 
   const getTopRatedMovies = async () => {
-    const data = await fetch("https://api.themoviedb.org/3/movie/top_rated?page=1", API_OPTIONS);
-    const json = await data.json();
-    dispatch(addTopRatedMovies(json.results));
+    try {
+      const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+      const targetUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&page=1`;
+      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+
+      const data = await fetch(proxyUrl);
+      const json = await data.json();
+      
+      if (json && json.results) {
+        dispatch(addTopRatedMovies(json.results));
+      }
+    } catch (error) {
+      console.error("Failed to fetch top rated movies:", error);
+    }
   };
 
   useEffect(() => {
