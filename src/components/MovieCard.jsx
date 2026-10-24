@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { IMG_CDN_URL } from '../utils/constants';
 import PlayerModal from './PlayerModal';
 
 const MovieCard = ({ posterPath, movieId }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   if (!posterPath) return null;
+
+  // TMDB Image Base URL
+  const imgCdnUrl = "https://image.tmdb.org/t/p/w500";
 
   return (
     <>
@@ -15,7 +17,7 @@ const MovieCard = ({ posterPath, movieId }) => {
       >
         <img 
           alt="Movie Poster" 
-          src={IMG_CDN_URL + posterPath} 
+          src={imgCdnUrl + posterPath} 
           className="rounded-lg"
         />
       </div>
