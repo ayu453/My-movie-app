@@ -1,21 +1,29 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playwrite+PT:wght@100..400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-body {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+:root{font-family:"DM Sans",sans-serif;color:#f4f2ed;background:#090a0c;font-synthesis:none;text-rendering:optimizeLegibility}
+*{box-sizing:border-box}
+html{background:#090a0c;scroll-behavior:smooth}
+body{margin:0;min-width:320px;background:#090a0c;color:#f4f2ed;-ms-overflow-style:none;scrollbar-width:none}
+body::-webkit-scrollbar,::-webkit-scrollbar{display:none}
+button{font:inherit}
+.scrollbar-hide::-webkit-scrollbar{display:none}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+.aflux-header{background:linear-gradient(180deg,rgba(7,8,10,.96),rgba(7,8,10,.72) 72%,transparent);backdrop-filter:blur(12px)}
+.aflux-logo{font-family:"Space Grotesk",sans-serif;letter-spacing:-.08em;font-size:2rem;font-weight:700;color:#f7f4ed}
+.aflux-logo span{color:#d6a85c}
+.aflux-nav{color:#aaa9a5;transition:color .2s}.aflux-nav:hover,.aflux-nav.active{color:#fff}
+.aflux-ai{border:1px solid rgba(214,168,92,.45);background:rgba(214,168,92,.12);color:#f0d6a7;border-radius:999px;padding:9px 15px}
+.aflux-hero{position:relative;min-height:680px;background:#101114;overflow:hidden}
+.aflux-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#090a0c 0%,rgba(9,10,12,.86) 28%,rgba(9,10,12,.18) 72%,rgba(9,10,12,.2)),linear-gradient(0deg,#090a0c 0%,transparent 55%);pointer-events:none}
+.aflux-hero-copy{position:absolute;z-index:2;left:clamp(24px,7vw,112px);bottom:125px;max-width:600px}
+.aflux-kicker{color:#d6a85c;letter-spacing:.24em;text-transform:uppercase;font-size:11px;font-weight:700}
+.aflux-title{font-family:"Space Grotesk",sans-serif;font-size:clamp(38px,5.8vw,76px);line-height:.98;letter-spacing:-.055em;font-weight:700}
+.aflux-primary{background:#d6a85c;color:#17130d;border-radius:5px;padding:13px 23px;font-weight:800;transition:transform .2s,background .2s}.aflux-primary:hover{background:#efc77d;transform:translateY(-2px)}
+.aflux-ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:white;border-radius:5px;padding:13px 20px;font-weight:700;backdrop-filter:blur(8px)}
+.aflux-section{padding:22px clamp(18px,5vw,76px) 8px}
+.aflux-section-title{font-family:"Space Grotesk",sans-serif;font-size:23px;font-weight:600;letter-spacing:-.03em}
+.aflux-card{width:clamp(126px,14vw,190px);flex:0 0 auto;cursor:pointer;transition:transform .25s}
+.aflux-card:hover{transform:translateY(-7px) scale(1.025)}
+.aflux-card img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:9px;background:#191a1d;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.aflux-card-title{font-size:13px;color:#e8e5df;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:640px){.aflux-hero{min-height:590px}.aflux-hero-copy{bottom:95px;left:22px;right:22px}.aflux-hero:after{background:linear-gradient(0deg,#090a0c 0%,rgba(9,10,12,.68) 48%,rgba(9,10,12,.1) 100%)}.aflux-section{padding:17px 16px 4px}.aflux-section-title{font-size:19px}.aflux-card{width:128px}.aflux-logo{font-size:1.65rem}}
