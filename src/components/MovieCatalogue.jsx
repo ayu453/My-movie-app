@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -15,6 +15,7 @@ const GENRES = [
 
 const MovieCatalogue = () => {
   const navigate = useNavigate();
+  const requestId = useRef(0);
   const [mode, setMode] = useState("worldwide");
   const [genre, setGenre] = useState("");
   const [query, setQuery] = useState("");
@@ -27,7 +28,7 @@ const MovieCatalogue = () => {
 
   const endpoint = useMemo(() => {
     if (submittedQuery.trim()) {
-      return `/api/tmdb/search/movie?query=${encodeURIComponent(submittedQuery.trim())}&include_adult=false&language=hi-IN`;
+      return `/api/tmdb/search/movie?query=${encodeURIComponent(submittedQuery.trim())}&include_adult=false&language=hi-IN&page=${page}`;
     }
     const params = new URLSearchParams({
       language: "hi-IN",
@@ -41,13 +42,14 @@ const MovieCatalogue = () => {
   }, [submittedQuery, mode, genre, page]);
 
   const loadPage = useCallback(async (reset = false) => {
-    if (loading) return;
+    const currentRequest = ++requestId.current;
     setLoading(true);
     setError("");
     try {
       const response = await fetch(endpoint, API_OPTIONS);
       if (!response.ok) throw new Error(`Catalogue request failed (${response.status})`);
       const data = await response.json();
+      if (currentRequest !== requestId.current) return;
       const incoming = Array.isArray(data.results) ? data.results : [];
       setMovies((current) => {
         const base = reset ? [] : current;
@@ -56,12 +58,14 @@ const MovieCatalogue = () => {
       });
       setTotalPages(Math.min(Number(data.total_pages) || 1, 500));
     } catch (err) {
-      setError("Movies could not be loaded. Please try again.");
-      console.error("Aflix catalogue error:", err);
+      if (currentRequest === requestId.current) {
+        setError("Movies could not be loaded. Please try again.");
+        console.error("Aflix catalogue error:", err);
+      }
     } finally {
-      setLoading(false);
+      if (currentRequest === requestId.current) setLoading(false);
     }
-  }, [endpoint, loading]);
+  }, [endpoint]);
 
   useEffect(() => {
     setMovies([]);
@@ -70,7 +74,7 @@ const MovieCatalogue = () => {
 
   useEffect(() => {
     loadPage(page === 1);
-  }, [page, endpoint]); // load each selected catalogue page
+  }, [page, endpoint, loadPage]);
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -93,16 +97,13 @@ const MovieCatalogue = () => {
           <div>
             <div className="aflux-kicker mb-2">THE WORLD OF CINEMA</div>
             <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">All Movies</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">
-              Explore worldwide movie releases with Hindi-language titles and descriptions where TMDB provides them.
-            </p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/55">Explore worldwide movie releases with Hindi-language titles and descriptions where TMDB provides them.</p>
           </div>
           <button onClick={() => navigate("/browse")} className="aflux-ghost">← Back to Discover</button>
         </div>
 
         <form onSubmit={submitSearch} className="mb-6 flex max-w-2xl gap-2">
-          <input value={query} onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search movies from around the world…"
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search movies from around the world…"
             className="min-w-0 flex-1 rounded-lg border border-white/15 bg-white/[0.06] px-4 py-3 text-sm outline-none focus:border-[#c5a66a]" />
           <button type="submit" className="aflux-primary !px-5">Search</button>
         </form>
@@ -122,12 +123,11 @@ const MovieCatalogue = () => {
 
         {error && <div className="mb-6 rounded-lg border border-red-400/30 bg-red-400/10 p-4 text-sm text-red-200">{error} <button onClick={() => loadPage(true)} className="ml-2 underline">Retry</button></div>}
         <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {movies.map((movie) => <MovieCard key={movie.id} movieId={movie.id} title={movie.title || movie.name}
-            posterPath={movie.poster_path} relesed={movie.release_date?.slice(0, 4)} rating={movie.vote_average} />)}
+          {movies.map((movie) => <MovieCard key={movie.id} movieId={movie.id} title={movie.title || movie.name} posterPath={movie.poster_path} relesed={movie.release_date?.slice(0, 4)} rating={movie.vote_average} />)}
         </div>
         {!loading && !movies.length && !error && <p className="py-20 text-center text-sm text-white/50">No movies found. Try another search or filter.</p>}
         {loading && <p className="py-10 text-center text-sm text-white/50">Loading movies…</p>}
-        {!submittedQuery && page < totalPages && <div className="mt-12 text-center">
+        {page < totalPages && <div className="mt-12 text-center">
           <button disabled={loading} onClick={() => setPage((current) => current + 1)} className="aflux-ghost disabled:opacity-40">Load more movies</button>
         </div>}
       </main>
