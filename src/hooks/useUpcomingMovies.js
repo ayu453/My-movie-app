@@ -9,15 +9,31 @@ const useUpcomingMovies = () => {
     const load = async () => {
       try {
         const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-        const pages = await Promise.all(Array.from({ length: 5 }, (_, i) =>
-          fetch(`/api/tmdb/discover/movie?api_key=${apiKey}&language=hi-IN&with_original_language=hi&sort_by=release_date.desc&include_adult=false&page=${i + 1}`).then(r => r.json())
-        ));
-        const movies = pages.flatMap(p => p?.results || []);
+        // Hindi is the display language only. No original-language filter:
+        // films from every country and language remain discoverable.
+        const pages = await Promise.all(
+          Array.from({ length: 10 }, (_, index) =>
+            fetch(`/api/tmdb/movie/upcoming?api_key=${apiKey}&language=hi-IN&page=${index + 1}`)
+              .then((response) => {
+                if (!response.ok) throw new Error(`TMDB request failed: ${response.status}`);
+                return response.json();
+              })
+          )
+        );
+        const seen = new Set();
+        const movies = pages.flatMap((page) => page?.results || []).filter((movie) => {
+          if (!movie?.id || seen.has(movie.id)) return false;
+          seen.add(movie.id);
+          return true;
+        });
         if (active) dispatch(addUpcomingMovies(movies));
-      } catch (error) { console.error("Failed to load latest Hindi movies:", error); }
+      } catch (error) {
+        console.error("Unable to load worldwide movies:", error);
+      }
     };
     load();
     return () => { active = false; };
   }, [dispatch]);
 };
+
 export default useUpcomingMovies;
