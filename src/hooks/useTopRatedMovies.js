@@ -4,26 +4,20 @@ import { addTopRatedMovies } from "../utils/moviesSlice";
 
 const useTopRatedMovies = () => {
   const dispatch = useDispatch();
-
-  const getTopRatedMovies = async () => {
-    try {
-      const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-      const url = `/api/tmdb/movie/top_rated?api_key=${apiKey}&page=1`;
-
-      const data = await fetch(url);
-      const json = await data.json();
-      
-      if (json && json.results) {
-        dispatch(addTopRatedMovies(json.results));
-      }
-    } catch (error) {
-      console.error("Failed to fetch top rated movies:", error);
-    }
-  };
-
   useEffect(() => {
-    getTopRatedMovies();
-  }, []);
+    let active = true;
+    const load = async () => {
+      try {
+        const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+        const pages = await Promise.all(Array.from({ length: 5 }, (_, i) =>
+          fetch(`/api/tmdb/discover/movie?api_key=${apiKey}&language=hi-IN&with_original_language=hi&sort_by=vote_average.desc&vote_count.gte=20&page=${i + 1}`).then(r => r.json())
+        ));
+        const movies = pages.flatMap(p => p?.results || []);
+        if (active) dispatch(addTopRatedMovies(movies));
+      } catch (error) { console.error("Failed to load top rated Hindi movies:", error); }
+    };
+    load();
+    return () => { active = false; };
+  }, [dispatch]);
 };
-
 export default useTopRatedMovies;
