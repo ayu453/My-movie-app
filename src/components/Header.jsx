@@ -40,6 +40,7 @@ const Header = ({ from }) => {
       </button>
       <nav className="aflux-nav" aria-label="Main navigation">
         <button onClick={() => { dispatch(changeGeminiSearchState(false)); navigate("/browse"); }}>Discover</button>
+        <button onClick={() => navigate("/movies")}>All Movies</button>
         <button onClick={() => dispatch(changeGeminiSearchState())}>{toggleSearch ? "← Back to cinema" : "✦ AI discovery"}</button>
       </nav>
       <div className="relative ml-auto">
