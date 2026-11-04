@@ -11,38 +11,25 @@ import Footer from "./Footer";
 
 const Browse = () => {
   const showGeminiSearch = useSelector((store) => store.gemini.isGeminiSearchEnable);
-  const nowPlayingMovies = useSelector((store) => store.gemini.nowPlayingMovies);
-  const popularMovies = useSelector((store) => store.gemini.popularMovies);
-  const topRatedMovies = useSelector((store) => store.gemini.topRatedMovies);
-  const upcomingMovies = useSelector((store) => store.gemini.upcomingMovies);
+  const nowPlayingMovies = useSelector((store) => store.movies.nowPlayingMovies);
+  const popularMovies = useSelector((store) => store.movies.popularMovies);
+  const topRatedMovies = useSelector((store) => store.movies.topRatedMovies);
+  const upcomingMovies = useSelector((store) => store.movies.upcomingMovies);
 
-  !nowPlayingMovies && useNowPlayingMovies();
-  !popularMovies && usePopularMovies();
-  !topRatedMovies && useTopRatedMovies();
-  !upcomingMovies && useUpcomingMovies();
+  useNowPlayingMovies();
+  usePopularMovies();
+  useTopRatedMovies();
+  useUpcomingMovies();
 
   return (
-    <div className="">
-      <section>
-        <Header from={"browse"} />
-      </section>
-      {showGeminiSearch ? (
-        <GeminiSearch />
-      ) : (
-        <>
-          <section className=" top-0 z-[-1] w-full">
-            <MainContainer />
-          </section>
-          <section className="">
-            <SecondaryContainer />
-          </section>
-        </>
-      )}
-      <section>
-        <Footer />
-      </section>
+    <div>
+      <section><Header from="browse" /></section>
+      {showGeminiSearch ? <GeminiSearch /> : <>
+        <section className="top-0 z-[-1] w-full"><MainContainer /></section>
+        <section><SecondaryContainer /></section>
+      </>}
+      <section><Footer /></section>
     </div>
   );
 };
-
 export default Browse;
