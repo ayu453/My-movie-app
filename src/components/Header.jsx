@@ -35,7 +35,7 @@ const Header = ({ from }) => {
 
   if (from === "browse") return (
     <header className="aflux-header">
-      <button onClick={() => { dispatch(changeGeminiSearchState(false)); navigate("/browse"); }} className="shrink-0" aria-label="Aflix home">
+      <button onClick={() => { if (toggleSearch) dispatch(changeGeminiSearchState()); navigate("/browse"); }} className="shrink-0" aria-label="Aflix home">
         <img className="aflux-logo" src={Logo} alt="Aflix" />
       </button>
       <nav className="aflux-nav" aria-label="Main navigation">
