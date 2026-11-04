@@ -11,10 +11,6 @@ import Footer from "./Footer";
 
 const Browse = () => {
   const showGeminiSearch = useSelector((store) => store.gemini.isGeminiSearchEnable);
-  const nowPlayingMovies = useSelector((store) => store.movies.nowPlayingMovies);
-  const popularMovies = useSelector((store) => store.movies.popularMovies);
-  const topRatedMovies = useSelector((store) => store.movies.topRatedMovies);
-  const upcomingMovies = useSelector((store) => store.movies.upcomingMovies);
 
   useNowPlayingMovies();
   usePopularMovies();
